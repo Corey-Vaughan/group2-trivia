@@ -35,7 +35,9 @@ var game =
   	myDivAnswer2:$("<div/>", {"class": "answer col-12"}),
   	myDivAnswer3:$("<div/>", {"class": "answer col-12"}),
   	myDivAnswer4:$("<div/>", {"class": "answer col-12"}),
-  	questions:0,
+  	theQuestion:"None",
+  	answerArray:0,
+  	answerNum:0,
   	startNewGame: function() 
   	{//set up the first question and initialize the div and variables
 	    game.question = 0;
@@ -111,24 +113,32 @@ var game =
 		//alert(snapshot.child("Game").child("question0").child("wrong4").val()[2]);
 		database.ref("Game").child('questions').orderByChild('questionNumber').equalTo(5).on("value", function(snapshot) {
     		console.log(snapshot.val());
-    		console.log(snapshot.child("question").val());
+    		//console.log(snapshot.question.val());
     		snapshot.forEach(function(data) {
-        				console.log(data.key);
+        				/*console.log(data.key);
+        				console.log(snapshot.val().question);
+        				//Try this
+						console.log(data.question);*/
+						//Or try this
+						game.theQuestion = data.val().question;
+						//console.log(data.val().theAnswers);
+						game.answerArray = data.val().theAnswers;
+						game.answerNum = data.val().theAnswer;
     				});
     		//console.log(snapshot.child("question").val());
 		});
 		//console.log(game.questions[0]);
 		game.myDivGameArea.empty();//clear out my div and add the questions
 		game.myDivGameArea.append("<div><h4 class='text-center' id = 'timeRemaining'>Time:</h4></div>");
-		game.myDivGameArea.append("<div><h4 class='text-center' id = 'prompt'>" + game.questions[0]+"</h4></div>");
-		/*$(game.categoryList).each(function(index,item)
+		game.myDivGameArea.append("<div><h4 class='text-center' id = 'prompt'>" + game.theQuestion +"</h4></div>");
+		$(game.answerArray).each(function(index,item)
 	    {
 	    	//display the categories
-	    	var newDiv = $("<button/>", {"class": "categoryChoice col-12"});
-	    	newDiv.attr("data-c",game.categoryNums[index]);
-	    	newDiv.attr("data-n",item);
+	    	var newDiv = $("<button/>", {"class": "answerChoice col-12"});
+	    	newDiv.attr("data-i",game.categoryNums[index]);
+	    	newDiv.attr("data-n",game.answerNum);
 		    game.myDivGameArea.append(newDiv.text(item));
-	    });*/
+	    });
 	},
 	outtaTime: function() 
 	{/*//the timer hit zero
@@ -209,7 +219,7 @@ $(document).on("click", "#startTheGame" , function(event)//start the game
 
 database.ref("Game/timer").on("value", function(snapshot) //the timer is counting down
 {
-	game.time = snapshot.child("Game").child("timer").val();
+	game.time = snapshot.val();
 	$("#timeRemaining").text("Time Remaining: " + game.time);
 });
 
