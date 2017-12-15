@@ -1,0 +1,88 @@
+<DOCTYPE html>
+  <html lang="en-us">
+  
+  <head>
+    <meta charset="utf-8">
+
+    <!--typography-->
+    <link href="https://fonts.googleapis.com/css?family=Gudea|Shrikhand" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!--link normalize.css-->
+    <link type="text/css" rel="stylesheet" href="assets/css/normalize.css">
+  
+    <!--link css-->
+    <link type="text/css" rel="stylesheet" href="assets/css/NKCstuff.css">
+    
+    <title>Project 1: Multiplayer Trivia Game</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  </head>
+
+  <body>
+      <div class="wrapper">
+        <div class="container-fluid">
+    <!-- Heading.  Find some kind of fancy font.-->      
+          <div class="jumbotron">
+            <h1>Look Who's Smarter Now!</h1>
+          </div>
+          <div class="row">
+    <!-- achievements log (top on xs screen) -->
+            <div class="col-lg-4">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Achievements List</h3>
+                </div>
+                <div class="panel-body" id="achievements"></div>
+              </div>
+            </div>
+
+    <!-- game content (middle on xs screen) -->
+            <div class="col-lg-8">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Game</h3>
+                </div>
+                <div class="panel-body" id="content">
+                  <form class="form-inline">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="player" placeholder="Choose Your Name">
+                        <span class="input-group-btn" id="chat-input">
+                        <button class="btn btn-success" type="submit" id="name-btn" >Got it!</button>
+                </span>
+              </div>
+                          </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+    <!-- Chat log (bottom on xs screen) -->
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8" id="chat">
+              <ul id="chat-output"></ul>
+              <div class="input-group">
+                <input type="text" class="form-control" id="chat-input" placeholder="ur gonna get pwnd">
+                <span class="input-group-btn" id="chat-input">
+                  <button class="btn btn-success" type="submit" id="chat-btn" >Taunt Your Adversary!</button>
+                </span>
+              </div>
+            </div>
+            <div class="col-sm-2"></div>
+          </div>
+      </div> 
+  </body>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="  crossorigin="anonymous"></script>
+
+    <!-- my js file -->
+    <script src="assets/javascript/NKCstuff.js"></script>
+
+</html>
