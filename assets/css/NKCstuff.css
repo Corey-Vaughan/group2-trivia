@@ -76,6 +76,21 @@ body {
   	cursor: pointer;
 }
 
+.question-div {
+	margin: 20px auto;
+}
+
+.option-div {
+	margin: 20px auto;
+	font-weight: normal;
+}
+
+.option-div:hover {
+	border: 1px solid #cccccc;
+	font-weight: bold;
+	cursor: pointer;
+}
+
 
 
 

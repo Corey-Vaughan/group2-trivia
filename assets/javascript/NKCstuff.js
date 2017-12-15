@@ -155,19 +155,35 @@ function getQuestions() {
       console.log(optionArr);
       
       //randomize responses
+      var newOptionArr = shuffleResponses(optionArr);
+      console.log(newOptionArr);
       
-      
+      //display responses
+      for (var i = 0; i < newOptionArr.length; i++) {
+        var optionDiv = $('<div class="option-div">');
+        optionDiv.attr('data-name', newOptionArr[i]);
+        optionDiv.html(newOptionArr[i]);
+        questionDiv.append(optionDiv);
+      }
      
-        /*for (var i = 0; i < answerArr.length; i++) {
-          var answerDiv = $('<div class="answer-div">');
-          answerDiv.attr('data-name', answerArr[i]);
-          answerDiv.html(answerArr[i]);
-          questionDiv.append(answerDiv);
-        }
-      }*/
+        
     });
 }
 
+function shuffleResponses(arr) {
+  var currentIndex = arr.length, tempValue, randomIndex;
+
+  while (0 !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    tempValue = arr[currentIndex];
+    arr[currentIndex] = arr[randomIndex];
+    arr[randomIndex] = tempValue;
+  }
+
+  return arr;
+}
 
   
 
