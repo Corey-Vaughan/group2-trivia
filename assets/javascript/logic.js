@@ -28,13 +28,13 @@ var player = {
 
 var categoryOne = {
   name: 'Science & Nature',
-  catergoryNum: 17,
+  categoryNum: 17,
   image: './assets/images/science.jpg',
 };
 
 var categoryTwo = {
   name: 'Sports',
-  catergoryNum: 21,
+  categoryNum: 21,
   image: './assets/images/sports.jpg',
 };
 
@@ -58,7 +58,7 @@ var categoryFive = {
 
 var categorySix = {
   name: 'Art',
-  catergorynum: 25,
+  categorynum: 25,
   image: './assets/images/art.jpg',
 };
 
