@@ -40,11 +40,12 @@ var game =
     game.question = 0;
     game.displayQuestions();
   },
-  nextQuestion: function();
+  nextQuestion: function()
   {
     game.question++;
+    game.timeID = setInterval(function(){ game.count(); }, 1000);
     game.displayQuestions();
-  }
+  },
   getQuestions: function()
   {
     $.ajax(
@@ -194,6 +195,7 @@ var game =
       game.showAnswer(2);//you didn't answer in time
     }
     clearInterval(game.timeID)//
+    setTimeout(function(){ game.nextQuestion(); }, 8000);
   },
   count: function()
   {//count down from a given number of seconds
@@ -299,6 +301,7 @@ database.ref("Player1/Answered").on("value", function(snapshot) //the timer is c
     //game.displayAnswer();
     //kill the timer
     clearInterval(game.timeID);
+    setTimeout(function(){ game.nextQuestion(); }, 8000);
   }
   else
   {
@@ -315,6 +318,7 @@ database.ref("Player2/Answered").on("value", function(snapshot) //the timer is c
     //game.displayAnswer();
     //kill the timer
     clearInterval(game.timeID);
+    setTimeout(function(){ game.nextQuestion(); }, 8000);
   }
   else
   {
