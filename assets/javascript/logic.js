@@ -171,7 +171,7 @@ var game =
         {
           game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'> right answer!!!!!</h4></div>");
         }
-        else if(yourAnswer == 1)//right
+        else if(yourAnswer == 2)//right
         {
           game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'> no answer!!!!!</h4></div>");
         }
@@ -188,6 +188,7 @@ var game =
       database.ref("Player" + game.player).child('Answered').set(1);
       game.showAnswer(2);//you didn't answer in time
     }
+    clearInterval(game.timeID)//
   },
   count: function()
   {//count down from a given number of seconds
