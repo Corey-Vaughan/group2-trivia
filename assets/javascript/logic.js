@@ -38,11 +38,14 @@ var game =
   startNewGame: function() 
   {//set up the first question and initialize the div and variables
     game.question = 0;
+    game.time = 15;
+    game.timeID = setInterval(function(){ game.count(); }, 1000);
     game.displayQuestions();
   },
   nextQuestion: function()
   {
     game.question++;
+    game.time = 15;
     game.timeID = setInterval(function(){ game.count(); }, 1000);
     game.displayQuestions();
   },
@@ -59,9 +62,7 @@ var game =
       for (var i = 0; i < response.results.length; i++) 
       {
         game.loadQuestions(response.results[i],i);
-      }
-      game.time = 15;
-      game.timeID = setInterval(function(){ game.count(); }, 1000); 
+      } 
       game.startNewGame();
     });
   },
