@@ -210,12 +210,50 @@ var game =
       game.outtaTime();
     }
   },
+  leaderboardEndGame: function()
+{//adds to the database
+//user input is put into variables
+  var userName = $("#player").val().trim();
+  var userScore = game.playerScore;
+  var userTime = game.playerTime;
+
+  var newUser = {
+    name: userName,
+    score: userScore,
+    time: userTime,
+  }
+
+  database.ref().push(newUser);
+
+},
+
 };
 
 $(document).ready(function() 
 {//when the document loads the first time
   //hide chat log on page load
   $('#chat').hide();
+
+  //shows the scores
+  database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+
+  console.log(childSnapshot.val());
+
+  // Store everything into a variable.
+  var userName = childSnapshot.val().name;
+  var userScore = childSnapshot.val().score;
+  var userTime = childSnapshot.val().time;
+
+  // User Info
+  console.log(userName);
+  console.log(userScore);
+  console.log(userTime);
+
+
+  // Add to the leaderboard
+  $("#achievements").append("<div>" + userName + ": " + userScore + " " +
+  userTime + "</div>");
+});
 });
 
 $(document).on("click", "#name-btn" , function(event)//enter your name
