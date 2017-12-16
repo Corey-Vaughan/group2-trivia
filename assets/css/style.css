@@ -76,7 +76,7 @@ body {
   	cursor: pointer;
 }
 
-
-
-
-
+#achievements{
+    height: 150px;
+    overflow: scroll;
+}
