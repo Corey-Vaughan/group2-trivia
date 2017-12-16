@@ -1,54 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>PeterTestWindow</title>
-    <!-- add a font -->
-    <link href="https://fonts.googleapis.com/css?family=Cardo:400,700" rel="stylesheet">
-    <!-- reset CSS -->
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
-     <!-- Font Awesome -->
-     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <!-- My Style -->
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-</head>
-<body>
-	<!-- My game area -->
-	<div class="container-fluid">
-	    <section>
-	    	<!-- fancy exciting title area -->
-			<div class ="row">
-				<div class="col-12" >
-		              <img src="assets/images/excitingMPRNZ2.png" class="rounded mx-auto d-block img-fluid" alt="Game Title Banner">
-		        </div>
-		    </div>
+<DOCTYPE html>
+	<html lang="en-us">
+	
+  <head>
+		<meta charset="utf-8">
 
-	      	<div class="row">
-		        <!-- Choose your warrior Player 1 -->
-		        <div class="col-12" >
-		          <div class="card">
-		            <div class="card-header text-nowrap text-center myHeaderText" id ="gamePlayText1">
-		            Multiplayer Trivia - Who's Smarter Now?
-		            </div>
-		            <div class="card-body warrior" id = "content">
-		              
-		            </div>
-		          </div>
-		        </div>
-		    </div>
+    <!--typography-->
+    <link href="https://fonts.googleapis.com/css?family=Gudea|Shrikhand" rel="stylesheet">
 
-		</section>	
-<!-- My footer -->
-		<div class="row">
-	      	<div class="col-sm-12 text-center text-white fixed-bottom myfooter">
-	        	©Copyright 2017 Peter Norman</a>
-	      	</div>
-	    </div>
-	</div>
-</body>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!--link normalize.css-->
+    <link type="text/css" rel="stylesheet" href="assets/css/normalize.css">
+	
+    <!--link css-->
+    <link type="text/css" rel="stylesheet" href="assets/css/NKCstuff.css">
+    
+    <title>Project 1: Multiplayer Trivia Game</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  </head>
+
+  <body>
+      <div class="wrapper">
+        <div class="container-fluid">
+    <!-- Heading.  Find some kind of fancy font.-->      
+          <div class="jumbotron">
+            <h1>Look Who's Smarter Now!</h1>
+          </div>
+          <div class="row">
+    <!-- achievements log (top on xs screen) -->
+            <div class="col-lg-4">
+              <div class="panel panel-primary" id="achievements-panel">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Achievements List</h3>
+                </div>
+                <div class="panel-body" id="achievements"></div>
+              </div>
+                
+        <!-- chat log (middle on xs screen) -->
+              <div id="chat">
+                <ul id="chat-output"></ul>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="chat-input" placeholder="ur gonna get pwnd">
+                  <span class="input-group-btn" id="chat-input">
+                    <button class="btn btn-success" type="submit" id="chat-btn" >Taunt Your Adversary!</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+    <!-- game content (bottom on xs screen) -->
+            <div class="col-lg-8">
+              <div class="panel panel-primary" id="content-panel">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Game</h3>
+                </div>
+                <div class="panel-body" id="content">
+                  <form class="form-inline">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input type="text" class="form-control" id="player" placeholder="Choose Your Name">
+                        <span class="input-group-btn" id="chat-input">
+                          <button class="btn btn-success" type="submit" id="name-btn" >Got it!</button>
+                        </span>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div>
+  </body>
 	<!-- Optional JavaScript -->
 
 

@@ -9,27 +9,103 @@ var config = {
 };
 
 firebase.initializeApp(config);
-// Assign the reference to the database to a variable named 'database'
-//var database = ...
+
 var database = firebase.database();
+
+//This section is the initial JS file from Nicole
+
+$(document).ready(function() {
+
+var numPlayers = 0;
+
+var player = {
+  name: '',
+  wins: 0,
+  losses: 0
+  };
+
+
+
+var categoryOne = {
+  name: 'Science & Nature',
+  catergoryNum: 17,
+  image: './assets/images/science.jpg',
+};
+
+var categoryTwo = {
+  name: 'Sports',
+  catergoryNum: 21,
+  image: './assets/images/sports.jpg',
+};
+
+var categoryThree = {
+  name: 'Geography',
+  categoryNum: 22,
+  image: './assets/images/geography.jpg',
+};
+
+var categoryFour = {
+  name: 'History',
+  categoryNum: 23,
+  image: './assets/images/history.jpg',
+};
+
+var categoryFive = {
+  name: 'Celebrities',
+  categoryNum: 26,
+  image: './assets/images/celebrities.jpg',
+};
+
+var categorySix = {
+  name: 'Art',
+  catergorynum: 25,
+  image: './assets/images/art.jpg',
+};
+
+var categories = [categoryOne, categoryTwo, categoryThree, categoryFour, categoryFive, categorySix];
+
+
+
+//hide chat log on page load
+$('#chat').hide()
+
+
+$('#name-btn').on('click', function(event) {
+  event.preventDefault();
+  var playerName = $('#player').val().trim();
+  player[name] = playerName;
+  $('#player').val('');
+  console.log(player[name]);
+  $('#chat').show();
+  checkNumOfPlayers();
+});
+
+//Code from Peter's JS File
 var game = 
+
 {//create a game object
     time: 0,
     question: 0,
     timeID: 0,
     player:0,
     categoryList: ["Science & Nature","Sports","Geography","History","Celebrities","Art"],
-    categoryIcons: ["./assets/images/science.jpg","./assets/images/sports.jpg","./assets/images/geography.jpg","./assets/images/history.jpg","./assets/images/celebrities.jpg","./assets/images/art.jpg"],
     categoryNums: [17,21,22,23,26,25],
     category:0,
     categoryName: "None",
-    playerScore:[0,0],
-    playerTime:[0,0],
-    playerAnswered:[0,0],
-    playerName:["None","Not Arrived"],
+    player1Score:0,
+    player2Score:0,
+    player1Time:0,
+    player2Time:0,
+    player1Name:"None",
+    player2Name:"Not Arrived",
     myDivGameArea: $("#content"),
+    myDivTimeRemaining:$("<div/>", {"id": "timeRemaining"}),
+    myDivQuestion:$("<div/>", {"id": "questionPic"}),
+    myDivAnswer1:$("<div/>", {"class": "answer col-12"}),
+    myDivAnswer2:$("<div/>", {"class": "answer col-12"}),
+    myDivAnswer3:$("<div/>", {"class": "answer col-12"}),
+    myDivAnswer4:$("<div/>", {"class": "answer col-12"}),
     theQuestion:"None",
-    theAnswer:"None",
     answerArray:0,
     answerNum:0,
     startNewGame: function() 
@@ -45,6 +121,7 @@ var game =
       method: 'GET',
     }).done(function(response) 
     {
+      //console.log(response);
       // looping through results and log
       database.ref("Game").child("questions").remove();
       for (var i = 0; i < response.results.length; i++) 
@@ -65,54 +142,89 @@ var game =
       theAnswer: randomAnswer,
       theAnswers: object.incorrect_answers
     });
+
+//Continuing Nicole's Code
+$(document).on('click', '.comp-div', checkNumOfPlayers);
+
+
+function checkNumOfPlayers() {
+  numPlayers++;
+  console.log('Number of players: ' + numPlayers);
+  if (numPlayers < 2) {
+    $('#content').html('Waiting on second player...').css('font-weight', 'bold');
+    compBtn = $('<button class="comp-div center-block">');
+    compBtn.html('Or play against the computer');
+    $('#content').append(compBtn);
+  } else {
+  displayCategories();
+  }
+}
+
+function displayCategories() {
+  $('#content').html('Pick your topic:').css('font-weight', 'bold');
+  var btnGroup = ('<div class="button-group center-block">');
+  $('#content').append(btnGroup);
+
+  for (var i = 0; i < categories.length; i++) {
+    var topicBtn = $('<div class="topic-button center-block">');
+    topicBtn.attr('data-name', categories[i].name);
+    topicBtn.css('background-image', 'url(' + categories[i].image + ')');
+    topicBtn.text(categories[i].name);
+    $('.button-group').append(topicBtn);
+
+  }
+}
+
+});
+
     game.shallWePlay();
   },
   shallWePlay: function()//waiting for player 2 or just start the game
   {
     game.myDivGameArea.empty();//clear out my div and add the category buttons
     game.myDivGameArea.append("<div><h4 class='text-center' id = 'prompt'>The Category is: " + game.categoryName +" </h4></div>");
-    game.myDivGameArea.append("<div><h5 class='text-center' id = 'player1Name'>Player 1: " + game.playerName[0]  +" </h5></div>");
-    game.myDivGameArea.append("<div><h5 class='text-center' id = 'player2Name'>Player 2: " + game.playerName[1] +" </h5></div>");
+    game.myDivGameArea.append("<div><h5 class='text-center' id = 'player1Name'>Player 1: " + game.player1Name  +" </h5></div>");
+    game.myDivGameArea.append("<div><h5 class='text-center' id = 'player2Name'>Player 2: " + game.player2Name +" </h5></div>");
     var myButton = $("<button/>", {"id": "startTheGame"});
     myButton.text("Start")
     game.myDivGameArea.append(myButton);
   },
-  tellGameFull: function()//prompt for the player name
+  getPlayerName: function()//prompt for the player name
   {          
-    game.myDivGameArea.empty();//clear out my div and add the category buttons
-    game.myDivGameArea.append("<div><h4 class='text-center' id = 'prompt'>The Game is already full.  Please come back later.</h4></div>");  
+    game.myDivGameArea.empty();       
+    game.myDivGameArea.append('Enter your name to begin:<br><form name="message" action=""> Player Name: <input name="usermsg" type="text" id="userName" class="col-8"/><input name="submitName" type="submit"  id="submitName" value="Send" /></form></div></div>')
   },
   displayCategories: function()
   {
     game.myDivGameArea.empty();//clear out my div and add the category buttons
-    //show the category buttons
-    $('#content').html('Pick your topic:').css('font-weight', 'bold');
-    var btnGroup = ('<div class="button-group center-block">');
-    $('#content').append(btnGroup);
-    for (var i = 0; i < game.categoryList.length; i++) 
-    {
-      var topicBtn = $('<div class="topic-button center-block categoryChoice">');
-      topicBtn.attr('data-c', game.categoryNums[i]);
-      topicBtn.attr("data-n",game.categoryList[i]);
-      topicBtn.css('background-image', 'url(' + game.categoryIcons[i] + ')');
-      topicBtn.text(game.categoryList[i]);
-      $('.button-group').append(topicBtn);
-
-    }
+    game.myDivGameArea.append("<div><h4 class='text-center' id = 'prompt'>Please choose a category:</h4></div>");
+    $(game.categoryList).each(function(index,item)
+      {
+        //display the categories
+        var newDiv = $("<button/>", {"class": "categoryChoice col-12"});
+        newDiv.attr("data-c",game.categoryNums[index]);
+        newDiv.attr("data-n",item);
+        game.myDivGameArea.append(newDiv.text(item));
+      });
   },
   displayQuestions: function()
   {
     //alert(snapshot.child("Game").child("question0").child("wrong4").val()[2]);
-    database.ref("Game").child('questions').orderByChild('questionNumber').equalTo(game.question).on("value", function(snapshot) {
+    database.ref("Game").child('questions').orderByChild('questionNumber').equalTo(5).on("value", function(snapshot) {
         console.log(snapshot.val());
         //console.log(snapshot.question.val());
-        snapshot.forEach(function(data) 
-        {
-        game.theQuestion = data.val().question;
-        game.answerArray = data.val().theAnswers;
-        game.answerNum = data.val().theAnswer;
-        game.theAnswer = data.val().theAnswers[game.answerNum];
-        });
+        snapshot.forEach(function(data) {
+                /*console.log(data.key);
+                console.log(snapshot.val().question);
+                //Try this
+            console.log(data.question);*/
+            //Or try this
+            game.theQuestion = data.val().question;
+            //console.log(data.val().theAnswers);
+            game.answerArray = data.val().theAnswers;
+            game.answerNum = data.val().theAnswer;
+            });
+        //console.log(snapshot.child("question").val());
     });
     //console.log(game.questions[0]);
     game.myDivGameArea.empty();//clear out my div and add the questions
@@ -120,56 +232,12 @@ var game =
     game.myDivGameArea.append("<div><h4 class='text-center' id = 'prompt'>" + game.theQuestion +"</h4></div>");
     $(game.answerArray).each(function(index,item)
       {
-        //display the questions
-        var newDiv = $("<button/>", {"class": "answerChoice button-group col-12"});
-        newDiv.attr("data-i",index);
-        newDiv.attr("data-a",game.answerNum);
+        //display the categories
+        var newDiv = $("<button/>", {"class": "answerChoice col-12"});
+        newDiv.attr("data-i",game.categoryNums[index]);
+        newDiv.attr("data-n",game.answerNum);
         game.myDivGameArea.append(newDiv.text(item));
       });
-  },
-  showAnswer: function(yourAnswer)
-  {
-    //clear out any previous info
-    game.myDivGameArea.empty();//clear out my div and add the gif and answer and score etc
-    var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=1&q=" + game.theAnswer;
-    //dc6zaTOxFJmzC a public key
-    //console.log(queryURL);
-    $.ajax(
-    {
-      url: queryURL,
-      method: "GET"
-    }).done(function(gifSearch)
-    {
-      
-      //for each gif in the data returned, add the rating and picture
-      $(gifSearch.data).each(function(index,element)
-      {
-      var rating = element.rating;//save the rating
-      var gifDiv = $("<div class='gifDiv'>");//create a div for the elements
-      var gifImage = $("<img>");//create an image to hold our picture
-      var p = $("<p>").text("The answer was: " + game.theAnswer);//create a p for our rating text
-      $(gifImage).attr("src", element.images.fixed_width.url);//we start out still
-      $(gifImage).addClass("aGif");//i'll detect a click with this later
-      //build our gifDiv and append it to our content area
-      gifDiv.append(p);
-      gifDiv.append(gifImage);
-      gifDiv.addClass("float-left bg-light border border-light")
-      $("#content").append(gifDiv);
-      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'>" + "Player1 Time: "+ game.playerTime[0]+ "</h4></div>");
-      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'>" + "Player1 Score: "+ game.playerScore[0]+ "</h4></div>");
-      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'>" + "Player2 Time: "+ game.playerTime[1]+ "</h4></div>");
-      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'>" + "Player2 Score: "+ game.playerScore[1]+ "</h4></div>");
-    
-    if(yourAnswer == 0)//wrong
-    {
-      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'> wrong answer!!!!!</h4></div>");
-    }
-    else if(yourAnswer == 1)//right
-    {
-      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'> right answer!!!!!</h4></div>");
-    }
-      });
-    });
   },
   outtaTime: function() 
   {/*//the timer hit zero
@@ -207,32 +275,25 @@ var game =
 
 };
 
-$(document).ready(function() 
-{//when the document loads the first time
-  //hide chat log on page load
-  $('#chat').hide();
-});
-
-$(document).on("click", "#name-btn" , function(event)//enter your name
+$(document).on("click", "#submitName" , function(event)//enter your name
 { // Prevent form from submitting
     event.preventDefault();
   // Get the input value and send it to the database
-  var playerName = $("#player").val().trim();
+  var playerName = $("#userName").val().trim();
   if(playerName.length > 0)
   {
-    database.ref("Player" + game.player).child("Name").set(playerName);
-    game.playerName[game.player - 1] = playerName;
+    database.ref("Game").child("player" + game.player + "Name").set(playerName);
     if(game.player == 1)
     {
+      game.player1Name = playerName;
       game.displayCategories();
     }
     else if(game.player == 2)
     {
-      //waiting for player to choose a category
+      game.player2Name = playerName;
     }
     $('#userName').val('');
-    $('#chat').show();
-    }
+  }
 });
 
 $(document).on("click", ".categoryChoice" , function(event)//enter your name
@@ -247,64 +308,12 @@ $(document).on("click", ".categoryChoice" , function(event)//enter your name
 
 $(document).on("click", "#startTheGame" , function(event)//start the game
 { //create the gameplay div, load question 1 and start the timer
-  database.ref("Game")
+  
     game.time = 15;
     game.timeID = setInterval(function(){ game.count(); }, 1000); 
     game.startNewGame();
 });
 
-
-$(document).on("click", ".answerChoice" , function(event)//choose an answer
-{ //create the gameplay div, add time to my timescore and 
-  //add to my score if correct.  
-  var myScore = game.playerTime[game.player -1] + (15 - game.time)
-  game.playerScore[game.player -1] = 15 - game.time;
-  database.ref("Player" + game.player).child('Time').set(myScore);
-  database.ref("Player" + game.player).child('Answered').set(1);
-
-  if($(this).data("i") == $(this).data("a"))//if you picked the right answer
-  {
-    game.showAnswer(1);
-  }
-  else
-  {
-    game.showAnswer(0);
-  }
-});
-
-database.ref("Player1/Answered").on("value", function(snapshot) //the timer is counting down
-{
-  game.playerAnswered[0] = snapshot.val();
-
-if((game.playerAnswered[0] + game.playerAnswered[1]) == 2)//we both answered
-  {
-    //show the correct answer page
-    //game.displayAnswer();
-    
-  }
-  else
-  {
-    //notify that we are waiting for the other player
-  }
-
-
-
-});
-
-database.ref("Player2/Answered").on("value", function(snapshot) //the timer is counting down
-{
-  game.playerAnswered[1] = snapshot.val();
-});
-
-database.ref("Player1/Score").on("value", function(snapshot) //the timer is counting down
-{
-  game.playerScore[0] = snapshot.val();
-});
-
-database.ref("Player/2Score").on("value", function(snapshot) //the timer is counting down
-{
-  game.playerScore[1] = snapshot.val();
-});
 
 
 database.ref("Game/timer").on("value", function(snapshot) //the timer is counting down
@@ -312,7 +321,6 @@ database.ref("Game/timer").on("value", function(snapshot) //the timer is countin
   game.time = snapshot.val();
   $("#timeRemaining").text("Time Remaining: " + game.time);
 });
-
 
 database.ref().on("value", function(snapshot) //any change on the database triggers this
 {
@@ -323,39 +331,42 @@ database.ref().on("value", function(snapshot) //any change on the database trigg
   if(game.player == 0)//this is our first look at the database
   {
     //Can I be player 1?
-      if(snapshot.child("Player1").child("Here").val() == null)
+      if(snapshot.child("Game").child("player1Here").val() == null)
       {
         //I can be player1
       game.player = 1;
-        database.ref("Player1").child("Here").set("yes");
-        if(snapshot.child("Player2").child("Here").val() == null)
+        database.ref("Game").child("player1Here").set("yes");
+        if(snapshot.child("Game").child("player2Here").val() == null)
         {
           //there is no player 2
-          game.playerName[1] = "Not arrived";
+          game.player2Name = "Not arrived";
         }
         else//thre is a player 2 - lets grab the name
         {
-          game.playerName[1] = snapshot.child("Player2").child("Name").val();
+          game.player2Name = snapshot.child("Game").child("player2Name").val();
         }
+        game.getPlayerName();
       }//i can't be player 1, can I be player 2?
-      else if(snapshot.child("Player2").child("Here").val() == null)
+      else if(snapshot.child("Game").child("player2Here").val() == null)
       {
         //I can be player 2
         game.player = 2;
-        database.ref("Player2").child("Here").set("yes");
-        if(snapshot.child("Player1").child("Here").val() == null)
+        database.ref("Game").child("player2Here").set("yes");
+        if(snapshot.child("Game").child("player1Here").val() == null)
         {
-          //there is no player 1 name yet
-          game.playerName[0] = "Not arrived";
+          //there is no player 1
+          game.player1Name = "Not arrived";
         }
         else//thre is a player 1 - lets grab the name
         {
-          game.playerName[0] = snapshot.child("Player").child("Name").val();
+          game.player2Name = snapshot.child("Game").child("player1Name").val();
         }
+        game.getPlayerName();
       }
       else
       {
-        game.tellGameFull();
+        game.myDivGameArea.empty();//clear out my div and add the category buttons
+      game.myDivGameArea.append("<div><h4 class='text-center' id = 'prompt'>The Game is already full.  Please come back later.</h4></div>");
       }
     }
 }, function(errorObject) {
@@ -368,11 +379,13 @@ window.addEventListener("beforeunload", function (e) {
   (e || window.event).returnValue = confirmationMessage; //Gecko + IE
   if(game.player == 1)//remove player 1
   {
-    database.ref("Player1").remove();
+    database.ref("Game").child("player1Here").remove();
+    database.ref("Game").child("player1Name").remove();
   }
   else if(game.player == 2)//remove player 2
   {
-    database.ref("Player2").remove();
+    database.ref("Game").child("player2Here").remove();
+    database.ref("Game").child("player2Name").remove();
   }
   return confirmationMessage;   //Webkit, Safari, Chrome
 });
