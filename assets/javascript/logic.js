@@ -14,32 +14,37 @@ firebase.initializeApp(config);
 var database = firebase.database();
 var game = 
 {//create a game object
-  time: 0,
-  question: 0,
-  timeID: 0,
-  player:0,
+  time: 0,//countdown timer
+  question: 0,//what question we are on
+  timeID: 0,//id for the countdown timer
+  player:0,//my player number
   categoryList: ["Science & Nature","Sports","Geography","History","Celebrities","Art"],
   categoryIcons: ["./assets/images/science.jpg","./assets/images/sports.jpg","./assets/images/geography.jpg","./assets/images/history.jpg","./assets/images/celebrities.jpg","./assets/images/art.jpg"],
-  categoryNums: [17,21,22,23,26,25],
-  category:0,
-  categoryName: "None",
-  playerScore:[0,0],
-  playerTime:[0,0],
-  playerAnswered:[0,0],
-  playerHere:["no","no"],
-  playerName:["None","Not Arrived"],
-  myDivGameArea: $("#content"),
-  theQuestion:"None",
-  theAnswer:"None",
-  answerArray:0,
-  answerNum:0,
-  playingComputer:0,
-  started:0,
+  categoryNums: [17,21,22,23,26,25],//useful for the trivia api they correlate to the categories
+  category:0,//the nubmer from the list above that we chose for this game
+  categoryName: "None",//the name of the category chosen from categoryList
+  playerScore:[0,0],//number of correct questions
+  playerTime:[0,0],//time spent total per question per player so far
+  playerAnswered:[0,0],//have you answered the current question?
+  playerHere:["no","no"],//are you here and registered in the database?
+  playerName:["None","Not Arrived"],//player names
+  myDivGameArea: $("#content"),//the div i write the game into
+  theQuestion:"None",//the current question text
+  theAnswer:"None",//the current answer text
+  answerArray:0,//an array for holding the answers available for the current question.  
+  answerNum:0,//the array location of the correct answer in the list of answerArray
+  playingComputer:0,//is the opponent real or a PC?
+  started:0,//has someone started the game?
   startNewGame: function() 
   {//set up the first question and initialize the div and variables
     game.question = 0;
     game.displayQuestions();
   },
+  nextQuestion: function();
+  {
+    game.question++;
+    game.displayQuestions();
+  }
   getQuestions: function()
   {
     $.ajax(
@@ -159,10 +164,10 @@ var game =
         gifDiv.append(gifImage);
         gifDiv.addClass("float-left bg-light border border-light")
         $("#content").append(gifDiv);
-        game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'>" + "Player1 Time: "+ game.playerTime[0]+ "</h4></div>");
-        game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'>" + "Player1 Score: "+ game.playerScore[0]+ "</h4></div>");
-        game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'>" + "Player2 Time: "+ game.playerTime[1]+ "</h4></div>");
-        game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'>" + "Player2 Score: "+ game.playerScore[1]+ "</h4></div>");          
+        game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime1'>" + "Player1 Time: "+ game.playerTime[0]+ "</h4></div>");
+        game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalScore1'>" + "Player1 Score: "+ game.playerScore[0]+ "</h4></div>");
+        game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime2'>" + "Player2 Time: "+ game.playerTime[1]+ "</h4></div>");
+        game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalScore2'>" + "Player2 Score: "+ game.playerScore[1]+ "</h4></div>");          
         if(yourAnswer == 0)//wrong
         {
           game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'> wrong answer!!!!!</h4></div>");
@@ -171,7 +176,7 @@ var game =
         {
           game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'> right answer!!!!!</h4></div>");
         }
-        else if(yourAnswer == 2)//right
+        else if(yourAnswer == 2)//no answer
         {
           game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'> no answer!!!!!</h4></div>");
         }
