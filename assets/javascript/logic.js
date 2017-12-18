@@ -42,6 +42,21 @@ var game =
     game.question = 0;
     game.time = 15;
     database.ref("Player" + game.player).child('Answered').set(0);
+    database.ref("Player" + game.player).child("Score").set(0);
+    database.ref("Player" + game.player).child("Time").set(0);
+    if(game.playingComputer == 1)//you are playing against the PC
+    {
+      if(game.player == 1)//you're player 1
+      {
+        database.ref("Player2").child("Score").set(0);
+        database.ref("Player2").child("Time").set(0);
+      }
+      else//you're player 2, so let's update the computer score 
+      {
+        database.ref("Player1").child("Score").set(0);
+        database.ref("Player1").child("Time").set(0); 
+      }
+    }
     game.timeID = setInterval(function(){ game.count(); }, 1000);
     game.displayQuestions();
   },
@@ -49,17 +64,30 @@ var game =
   {
     if(game.question == 9)//the game is over
     {
-      game.shallWePlay();
       game.started = 0;
       database.ref("Game").child('Started').set(0);//the game is starting
       game.go = 0;
       database.ref("Game").child('Go').set(0);//the game is starting
+      if(game.playingComputer == 1)//you are playing against the PC
+      {
+        if(game.player == 1)//you're player 1
+        {
+          database.ref("Player2").remove();
+        }
+        else//you're player 2 
+        {
+          database.ref("Player1").remove();
+        }
+      }
+      clearInterval(game.timeID)//
+      game.shallWePlay();
     }
     else
     {
       game.question++;
       game.time = 15;
       database.ref("Player" + game.player).child('Answered').set(0);
+      clearInterval(game.timeID)//
       game.timeID = setInterval(function(){ game.count(); }, 1000);
       game.displayQuestions();
     }
@@ -134,7 +162,7 @@ var game =
     //alert(snapshot.child("Game").child("question0").child("wrong4").val()[2]);
     database.ref("Game").child('questions').orderByChild('questionNumber').equalTo(game.question).on("value", function(snapshot) 
     {
-      console.log(snapshot.val());
+      //console.log(snapshot.val());
       //console.log(snapshot.question.val());
       snapshot.forEach(function(data) 
       {
@@ -177,7 +205,7 @@ var game =
       {
         $(gifImage).attr("src", game.categoryImage);//use a placeholder
       }
-      if(gifSearch.pagination.total_count == 1)
+      else if(gifSearch.pagination.total_count == 1)
       {
         var randomImage = 0;
         $(gifImage).attr("src", gifSearch.data[randomImage].images.fixed_width.url);//use the only one we got
@@ -200,10 +228,30 @@ var game =
       gifDiv.append(gifImage);
       gifDiv.addClass("float-left bg-light border border-light")
       $("#content").append(gifDiv);
-      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime1'>" + "Player1 Time: "+ game.playerTime[0]+ "</h4></div>");
-      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalScore1'>" + "Player1 Score: "+ game.playerScore[0]+ "</h4></div>");
-      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime2'>" + "Player2 Time: "+ game.playerTime[1]+ "</h4></div>");
-      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalScore2'>" + "Player2 Score: "+ game.playerScore[1]+ "</h4></div>");          
+      //IF You are playing against the PC, calculate the PC score
+      if(game.playingComputer == 1)//you are playing against the PC
+      {
+        var randomTime = Math.floor(Math.random() * 15) + 1;
+        var randomCorrect = Math.floor(Math.random() * 2);
+        if(game.player == 1)//you're player 1
+        {
+          randomCorrect = game.playerScore[1] + randomCorrect;
+          randomTime = game.playerTime[1] + randomTime;
+          database.ref("Player2").child('Time').set(randomTime);
+          database.ref("Player2").child('Score').set(randomCorrect);
+        }
+        else//you're player 2, so let's update the computer score 
+        {
+          randomCorrect = game.playerScore[0] + randomCorrect;
+          randomTime = game.playerTime[0] + randomTime;
+          database.ref("Player1").child('Time').set(randomTime);
+          database.ref("Player1").child('Score').set(randomCorrect); 
+        }
+      }
+      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime1'>" + game.playerName[0] + " Time: "+ game.playerTime[0]+ "</h4></div>");
+      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalScore1'>" + game.playerName[0] + " Score: "+ game.playerScore[0]+ "</h4></div>");
+      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime2'>" + game.playerName[1] + " Time: "+ game.playerTime[1]+ "</h4></div>");
+      game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalScore2'>" + game.playerName[1] + " Score: "+ game.playerScore[1]+ "</h4></div>");          
       if(yourAnswer == 0)//wrong
       {
         game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'> wrong answer!!!!!</h4></div>");
@@ -219,7 +267,7 @@ var game =
     });
   },
   outtaTime: function() 
-  {
+  {console.log("i'm outta time!")
     if(game.playerAnswered[game.player - 1] == 0)//if i haven't answered yet
     {
       var myTime = 15;
@@ -228,19 +276,24 @@ var game =
       database.ref("Player" + game.player).child('Answered').set(1);
       game.showAnswer(2);//you didn't answer in time
     }
-    clearInterval(game.timeID)//
+    
     setTimeout(function(){ game.nextQuestion(); }, 8000);
+    console.log("outta time");
   },
   count: function()
   {//count down from a given number of seconds
     if(game.time >= 0)
     {
-      database.ref("Game").child("timer").set(game.time);//set the timer to 15 seconds
+      if((game.player == 1) || (game.playingComputer ==1))
+      {
+        database.ref("Game").child("timer").set(game.time);//set the timer to 15 seconds
+      }
       $("#timeRemaining").text("Time Remaining: " + game.time);
       game.time --
     }
     else
     {
+      clearInterval(game.timeID)//
       game.outtaTime();
     }
   },
@@ -328,9 +381,13 @@ $(document).on("click", "#startTheGame" , function(event)//start the game
       {
         game.playingComputer = 1;
         database.ref("Game").child('Computer').set(1);//the game is starting
+        //database.ref("Player2").child("Answered").set(1);//the computer went already from now on
+        database.ref("Player2").child("Name").set("Computer");//set the computer name to computer
+        game.playerName[1] = "Computer";
+        game.playerAnswered[1] = 1;
       }
     } 
-    else if(game.player == 1)//if i'm player 2
+    else if(game.player == 2)//if i'm player 2
     {
       if(game.playerHere[0] == "yes")//is player 1 here?
       {
@@ -341,6 +398,10 @@ $(document).on("click", "#startTheGame" , function(event)//start the game
       {
         game.playingComputer = 1;
         database.ref("Game").child('Computer').set(1);//the game is starting
+        //database.ref("Player1").child("Answered").set(1);//the computer went already from now on
+        database.ref("Player1").child("Name").set("Computer");//set the computer name to computer
+        game.playerName[0] = "Computer";
+        game.playerAnswered[0] = 1;
       }
     }
     game.started = 1;
@@ -356,6 +417,7 @@ $(document).on("click", ".answerChoice" , function(event)//choose an answer
   myTime += game.playerTime[game.player -1];
   database.ref("Player" + game.player).child('Time').set(myTime);
   database.ref("Player" + game.player).child('Answered').set(1);
+
 
   if($(this).data("i") == $(this).data("a"))//if you picked the right answer
   {
@@ -484,11 +546,11 @@ database.ref("Player2/Here").on("value", function(snapshot) //player 2 is here
   game.playerHere[1] = snapshot.val();
 });
 
-
-/*database.ref("Game/timer").on("value", function(snapshot) //the timer is counting down
+/*
+database.ref("Game/timer").on("value", function(snapshot) //the timer is counting down
 {
-  game.time = snapshot.val();
-  $("#timeRemaining").text("Time Remaining: " + game.time);
+  //game.time = snapshot.val();
+  //$("#timeRemaining").text("Time Remaining: " + game.time);
 });*/
 
 
@@ -555,6 +617,13 @@ window.addEventListener("beforeunload", function (e) {
   else if(game.player == 2)//remove player 2
   {
     database.ref("Player2").remove();
+  }
+  if(game.playingComputer ==1)
+  {
+    database.ref("Player1").remove();
+    database.ref("Player2").remove();
+    database.ref("Game").child("Started").set(0);
+    database.ref("Game").child("Go").set(0);
   }
   if((game.playerHere[0] == null) && (game.playerHere[1] == null))
   {
