@@ -29,8 +29,47 @@ body {
 	margin-top: 10px;
 }
 
-#achievements-panel, #chat, #content-panel {
+#achievements-panel, #chat, #content-panel, #scoreboard-panel {
 	margin-bottom: 30px;
+}
+
+
+/* javascript classes */
+
+.answerChoice, #startTheGame {
+	background-color: green;
+	color: white;
+	border-radius: 5px;
+	margin: 20px;
+	padding: 10px;
+}
+
+.answerChoice:hover {
+	opacity: 0.5;
+}
+
+#totalTime {
+	font-family: 'Shrikhand', cursive;
+	font-size: 24px;
+	color: #ff0033;
+	margin-top: 30px;
+}
+
+#answerDiv {
+	font-family: 'Shrikhand', cursive;
+	font-size: 24px;
+	color: green;
+	margin-bottom: 30px;
+}
+
+#player1Name, #totalTime1, #totalScore1 {
+	font-weight: bold;
+	color: #e64100;
+}
+
+#player2Name, #totalTime2, #totalScore2 {
+	font-weight: bold;
+	color: #00a5e6;
 }
 
 .comp-div {
@@ -76,13 +115,54 @@ body {
   	cursor: pointer;
 }
 
-.question-div {
-	margin: 20px auto;
+#prompt {
+	font-size: 24px;
+	font-weight: bold;
 }
 
+#player1Name, #player2Name {
+	font-size: 24px;
+}
+
+@-webkit-keyframes opacity {
+	0% { opacity: 1; }
+	100% { opacity: 0; }
+}
+@-moz-keyframes opacity {
+	0% { opacity: 1; }
+	100% { opacity: 0; }
+}
+
+
+#player2Name span {
+	-webkit-animation-name: opacity;
+	-webkit-animation-duration: 2s;
+	-webkit-animation-iteration-count: infinite;
+	-moz-animation-name: opacity;
+	-moz-animation-duration: 2s;
+	-moz-animation-iteration-count: infinite;
+}
+
+#player2Name span:nth-child(2) {
+	-webkit-animation-delay: 300ms;
+	-moz-animation-delay: 300ms;
+}
+
+#player2Name span:nth-child(3) {
+	-webkit-animation-delay: 600ms;
+	-moz-animation-delay: 600ms;
+}
+
+
+
+
+
+/*
 .option-div {
 	margin: 20px auto;
 	font-weight: normal;
+	width: 30%;
+	padding: 20px 0;
 }
 
 .option-div:hover {
@@ -90,6 +170,10 @@ body {
 	font-weight: bold;
 	cursor: pointer;
 }
+
+
+
+*/
 
 
 

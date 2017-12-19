@@ -7,6 +7,12 @@
     <!--typography-->
     <link href="https://fonts.googleapis.com/css?family=Gudea|Shrikhand" rel="stylesheet">
 
+    <!--animate.css library-->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
+    integrity="sha384-OHBBOqpYHNsIqQy8hL1U+8OXf9hH6QRxi0+EODezv82DfnZoV7qoHAZDwMwEJvSw"
+    crossorigin="anonymous">
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -36,6 +42,28 @@
                   <h3 class="panel-title">Achievements List</h3>
                 </div>
                 <div class="panel-body" id="achievements"></div>
+              </div>
+
+      <!-- current player achievements table -->
+              <div class="panel panel-primary" id="scoreboard-panel">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Scoreboard</h3>
+                </div>
+                <div class="panel-body" id="scoreboard">
+                  <table class="table table-hover" id="scoreboard-table">
+                    <thead>
+                      <tr>
+                        <th>Question Number</th>
+                        <th>Correctly Answered?</th>
+                        <th>Your Time</th>
+                        <th>Your Score</th>
+                        <th>Score to Beat</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
               </div>
                 
         <!-- chat log (middle on xs screen) -->
@@ -75,13 +103,14 @@
       </div>
   </body>
     
-    <!-- firebase -->
-    <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
-
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="  crossorigin="anonymous"></script>
+
+    <!-- Firebase Reference -->
+    <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
 
     <!-- my file -->
     <script src="assets/javascript/NKCstuff.js"></script>
 
 </html>
+
