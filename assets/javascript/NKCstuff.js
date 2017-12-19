@@ -1,12 +1,12 @@
 // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyBFBvKHagloJanZuaJReZXduWHXkMalhVI",
-    authDomain: "new-project-25797.firebaseapp.com",
-    databaseURL: "https://new-project-25797.firebaseio.com",
-    projectId: "new-project-25797",
-    storageBucket: "new-project-25797.appspot.com",
-    messagingSenderId: "918629612329"
-  };
+var config = {
+  apiKey: "AIzaSyDuKVcxXFGtR58diOHgwY4id81rvQ-Ibtc",
+    authDomain: "classdemo-fdbbe.firebaseapp.com",
+    databaseURL: "https://classdemo-fdbbe.firebaseio.com",
+    projectId: "classdemo-fdbbe",
+    storageBucket: "classdemo-fdbbe.appspot.com",
+    messagingSenderId: "81003018946"
+};
 
 firebase.initializeApp(config);
 // Assign the reference to the database to a variable named 'database'
