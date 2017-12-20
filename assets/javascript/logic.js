@@ -248,17 +248,18 @@ var game =
           database.ref("Player1").child('Score').set(randomCorrect); 
         }
       }
+      /*
       game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime1'>" + game.playerName[0] + " Time: "+ game.playerTime[0]+ "</h4></div>");
       game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalScore1'>" + game.playerName[0] + " Score: "+ game.playerScore[0]+ "</h4></div>");
       game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime2'>" + game.playerName[1] + " Time: "+ game.playerTime[1]+ "</h4></div>");
       game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalScore2'>" + game.playerName[1] + " Score: "+ game.playerScore[1]+ "</h4></div>");          
-      
+      */
       //update scoreboard
-
-      var currentQuestion = game.question + 1;
-
-      $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
-
+      $("#p1score").text(game.playerName[0]+ ":   Total Score");
+      $("#p1time").text(game.playerName[0]+ ":   Total Time");
+      $("#p2score").text(game.playerName[1]+ ":   Total Score");
+      $("#p2time").text(game.playerName[1]+ ":   Total Time");
+      
       if(yourAnswer == 0)//wrong
       {
         game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'> wrong answer!!!!!</h4></div>");
@@ -303,6 +304,11 @@ var game =
       clearInterval(game.timeID)//
       game.outtaTime();
     }
+  },
+  updateScoreboard: function()
+  {
+    var currentQuestion = game.question + 1;
+    $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
   },
   leaderboardEndGame: function()
 {//adds to the database
@@ -449,11 +455,16 @@ database.ref("Player1/Answered").on("value", function(snapshot) //the timer is c
       //show the correct answer page
       //game.displayAnswer();
       //kill the timer
+      //update the scorboard-table
+      setTimeout(function(){ game.updateScoreboard(); }, 500);
       clearInterval(game.timeID);
       setTimeout(function(){ game.nextQuestion(); }, 8000);
     }
     else if((game.playingComputer == 1)&& (snapshot.val() == 1))
     {
+      //update the scorboard-table
+      //update the scorboard-table
+      setTimeout(function(){ game.updateScoreboard(); }, 500);
       clearInterval(game.timeID);
       setTimeout(function(){ game.nextQuestion(); }, 8000);
     }
@@ -473,12 +484,18 @@ database.ref("Player2/Answered").on("value", function(snapshot) //the timer is c
     {
       //show the correct answer page
       //game.displayAnswer();
+      //update the scorboard-table
+      //update the scorboard-table
+      setTimeout(function(){ game.updateScoreboard(); }, 500);
       //kill the timer
       clearInterval(game.timeID);
       setTimeout(function(){ game.nextQuestion(); }, 8000);
     }
     else if((game.playingComputer == 1)&& (snapshot.val() == 1))
     {
+      //update the scorboard-table
+      //update the scorboard-table
+      setTimeout(function(){ game.updateScoreboard(); }, 500);
       clearInterval(game.timeID);
       setTimeout(function(){ game.nextQuestion(); }, 8000);
     }
