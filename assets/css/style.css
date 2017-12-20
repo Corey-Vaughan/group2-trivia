@@ -80,16 +80,19 @@ body {
 #chatBox {
 	width: 100%;
 	margin: 10px auto;
+	border-collapse: separate;
+    border-spacing: 10px;
 }
 
 #displayRow {
-	padding: 10px;
+	padding: 5px;
 	height: 200px;
 	overflow: scroll;
 	display: block;
 	width: 100%;
 	background: white;
 	color: #337ab7;
+
 }
 
 

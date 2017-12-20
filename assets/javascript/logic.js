@@ -417,7 +417,7 @@ var showChats = function(){
       var chat = snapshot.val();
       console.log(chat.chat);
 
-      var newChatLine = "<tr><td>" + chat.chat.sender + "</td><td>" + chat.chat.message + "</td></tr>";
+      var newChatLine = "<tr><td>" + chat.chat.sender + ":</td><td>" + chat.chat.message + "</td></tr>";
       $("#displayRow").prepend(newChatLine);
     });
 };
