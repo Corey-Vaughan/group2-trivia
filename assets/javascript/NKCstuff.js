@@ -1,12 +1,12 @@
 // Initialize Firebase
-var config = {
-  apiKey: "AIzaSyDuKVcxXFGtR58diOHgwY4id81rvQ-Ibtc",
-    authDomain: "classdemo-fdbbe.firebaseapp.com",
-    databaseURL: "https://classdemo-fdbbe.firebaseio.com",
-    projectId: "classdemo-fdbbe",
-    storageBucket: "classdemo-fdbbe.appspot.com",
-    messagingSenderId: "81003018946"
-};
+  var config = {
+    apiKey: "AIzaSyBFBvKHagloJanZuaJReZXduWHXkMalhVI",
+    authDomain: "new-project-25797.firebaseapp.com",
+    databaseURL: "https://new-project-25797.firebaseio.com",
+    projectId: "new-project-25797",
+    storageBucket: "new-project-25797.appspot.com",
+    messagingSenderId: "918629612329"
+  };
 
 firebase.initializeApp(config);
 // Assign the reference to the database to a variable named 'database'
@@ -128,9 +128,9 @@ var game =
   {
     game.myDivGameArea.empty();//clear out my div and add the category buttons
     game.myDivGameArea.append("<div><h4 class='text-center' id = 'prompt'>Wait for an opponent or play against the Computer: </h4></div>");
-    game.myDivGameArea.append("<div><h5 class='text-center animated zoomInRight' id = 'player1Name'>Player 1: " + game.playerName[0]  +" </h5></div>");
-    game.myDivGameArea.append("<div><h5 class='text-center animated zoomInLeft' id = 'player2Name'>Player 2: " + game.playerName[1] +"<span>.</span><span>.</span><span>.</span></h5></div>");
-    var myButton = $("<button/>", {"id": "startTheGame"});
+    game.myDivGameArea.append("<div><h5 class='text-center animated zoomInRight' id = 'player1Name'>Player 1: " + game.playerName[0]  + " </h5></div>");
+    game.myDivGameArea.append("<div><h5 class='text-center animated zoomInLeft' id = 'player2Name'>Player 2: " + game.playerName[1] + " </h5></div>");
+    var myButton = $("<button class='animated infinite pulse' id='startTheGame'>");
     myButton.text("Start")
     game.myDivGameArea.append(myButton);
   },
@@ -248,10 +248,18 @@ var game =
           database.ref("Player1").child('Score').set(randomCorrect); 
         }
       }
+
       game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime1'>" + game.playerName[0] + " Time: "+ game.playerTime[0]+ "</h4></div>");
       game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalScore1'>" + game.playerName[0] + " Score: "+ game.playerScore[0]+ "</h4></div>");
       game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime2'>" + game.playerName[1] + " Time: "+ game.playerTime[1]+ "</h4></div>");
       game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalScore2'>" + game.playerName[1] + " Score: "+ game.playerScore[1]+ "</h4></div>");          
+
+      //update scoreboard
+
+       var currentQuestion = game.question + 1;
+
+       $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
+
       if(yourAnswer == 0)//wrong
       {
         game.myDivGameArea.append("<div><h4 class='text-center animated infinite bounce' id = 'totalTime'> wrong answer!!!!!</h4></div>");
@@ -300,6 +308,7 @@ var game =
   leaderboardEndGame: function()
   {//adds to the database
   //user input is put into variables
+
     var userName = $("#player").val().trim();
     var userScore = game.playerScore;
     var userTime = game.playerTime;
@@ -313,41 +322,7 @@ var game =
     database.ref().push(newUser);
 
   },
-/*
-fillPlayerStatusTable: function(answer)
-{//running score log
-//keep track of current player's score to compare to other player's score
-//pull data -- question number, whether answer was correct, cp's score, cp's time, op's score from database
-  if (game.player == 1) {
-    var currentQuestion = game.question + 1;
-    var currentScore = game.playerScore[0];
-    var currentTime =  game.playerTime[0];
 
-      if (answer == 1) {
-      
-        var currentUserData = {
-        question: currentQuestion,
-        score: currentScore,
-        time: currentTime
-        }
-
-      database.ref('Current Player').push(currentUserData);
-
-      $('#scoreboard-table > tbody').append('<tr><td>' + currentUserData.question + '</td><td>Yes</td><td>' + currentUserData.time + '</td><td>' + currentUserData.score + '</td></tr>');
-    } else {
-      
-      var currentUserData = {
-      question: currentQuestion,
-      score: currentScore,
-      time: 0
-      }
-
-      database.ref('Current Player').push(currentUserData);
-
-      $('#achievements-table > tbody').append('<tr><td>' + currentUserData.question + '</td><td>No</td><td>' + currentUserData.time + '</td><td>' + currentUserData.score + '</td></tr>');
-    }
-},
-*/
 };
 
 $(document).ready(function() 
@@ -461,12 +436,10 @@ $(document).on("click", ".answerChoice" , function(event)//choose an answer
     game.playerScore[game.player -1] = myScore;
     database.ref("Player" + game.player).child('Score').set(myScore);
     game.showAnswer(1);
-    //game.fillPlayerStatusTable(1);
   }
   else
   {
     game.showAnswer(0);
-    //game.fillPlayerStatusTable(0);
   }
 
   database.ref().on('child_added', function(childSnapshot, prevChildKey) {

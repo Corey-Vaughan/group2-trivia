@@ -72,20 +72,6 @@ body {
 	color: #00a5e6;
 }
 
-.comp-div {
-	width: 20%;
-	height: 5%;
-	border-radius: 10px;
-	background-color: blue;
-	color: white;
-	text-align: center;
-	margin-top: 30px;
-}
-
-.comp-div:hover {
-	opacity: 0.7;
-}
-
 .button-group {
 	vertical-align: middle;
 	text-align: center;
@@ -124,6 +110,11 @@ body {
 	font-size: 24px;
 }
 
+.fadeIn:first-child {
+	background-color: #ffff99;
+}
+
+/*
 @-webkit-keyframes opacity {
 	0% { opacity: 1; }
 	100% { opacity: 0; }
@@ -152,26 +143,6 @@ body {
 	-webkit-animation-delay: 600ms;
 	-moz-animation-delay: 600ms;
 }
-
-
-
-
-
-/*
-.option-div {
-	margin: 20px auto;
-	font-weight: normal;
-	width: 30%;
-	padding: 20px 0;
-}
-
-.option-div:hover {
-	border: 1px solid #cccccc;
-	font-weight: bold;
-	cursor: pointer;
-}
-
-
 
 */
 
