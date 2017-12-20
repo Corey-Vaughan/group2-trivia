@@ -79,20 +79,18 @@ var game =
           database.ref("Player1").remove();
         }
 
-          var userName = "lary";
-          var userScore = 50;
-          var userTime = "00:00";
+          var userName1 = game.playerName[0];
+          var userScore1 = game.playerScore[0];
+          var userTime1 = game.playerTime[0];
 
-          var newUser = {
-            name: userName,
-            score: userScore,
-            time: userTime,
+          var newUser1 = {
+            name: userName1,
+            score: userScore1,
+            time: userTime1,
             }
 
-          database.ref("/Highscores").push(newUser);
-          console.log("The game has ended");
-          console.log(newUser);
-          console.log(userScore);
+          database.ref("/Highscores").push(newUser1);
+\
         }
       clearInterval(game.timeID)//
       game.shallWePlay();
@@ -334,22 +332,6 @@ var game =
     
     
   },
-  leaderboardEndGame: function()
-{//adds to the database
-//user input is put into variables
-  var userName = $("#player").val().trim();
-  var userScore = game.playerScore;
-  var userTime = game.playerTime;
-
-  var newUser = {
-    name: userName,
-    score: userScore,
-    time: userTime,
-  }
-
-  database.ref().push(newUser);
-
-},
 
 };
 
@@ -358,20 +340,7 @@ $(document).ready(function()
   //hide chat log on page load
   $('#chat').hide();
 
-  //shows the scores
-  database.ref("/Highscores").on("value", function(snapshot) {
-
-  console.log(snapshot.val());
-
- $.each(snapshot.val(), function(k, v)
-  {
-    console.log(k)
-    console.log(v)
-
-    $("#achievements").append("<div><strong>" + v.name + "</strong><em> Score: </em>: " + v.score + "<em> Time: </em>" + v.time + "</div>");
-    });
   });
-});
 
 $(document).on("click", "#name-btn" , function(event)//enter your name
 { // Prevent form from submitting
@@ -716,3 +685,20 @@ $('#chat-btn').on('click', function() {
 });
 
 showChats();
+
+//This shows the leaderboard when the window loads
+window.onload =function(){
+//when the document loads the first time
+  //shows the scores
+
+  
+  database.ref("/Highscores").on("value", function(snapshot) {
+
+  console.log(snapshot.val());
+
+ $.each(snapshot.val(), function(k, v)
+  {
+    $("#achievements").append("<div><strong>" + v.name + "</strong><em> Score: </em>: " + v.score + "<em> Time: </em>" + v.time + "s</div>");
+    });
+  });
+};
