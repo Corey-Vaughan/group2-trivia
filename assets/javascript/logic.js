@@ -90,7 +90,6 @@ var game =
             }
 
           database.ref("/Highscores").push(newUser1);
-\
         }
       clearInterval(game.timeID)//
       game.shallWePlay();
@@ -691,7 +690,7 @@ window.onload =function(){
 //when the document loads the first time
   //shows the scores
 
-  
+
   database.ref("/Highscores").on("value", function(snapshot) {
 
   console.log(snapshot.val());
