@@ -441,71 +441,83 @@ $(document).on("click", ".answerChoice" , function(event)//choose an answer
 
 database.ref("Player1/Answered").on("value", function(snapshot) //the timer is counting down
 {
-  game.playerAnswered[0] = snapshot.val();
-  if((game.playerAnswered[0] + game.playerAnswered[1]) == 2)//we both answered
+  if(game.player > 0)//i'm in the game
   {
-    //show the correct answer page
-    //game.displayAnswer();
-    //kill the timer
-    clearInterval(game.timeID);
-    setTimeout(function(){ game.nextQuestion(); }, 8000);
-  }
-  else if((game.playingComputer == 1)&& (snapshot.val() == 1))
-  {
-    clearInterval(game.timeID);
-    setTimeout(function(){ game.nextQuestion(); }, 8000);
-  }
-  else
-  {
+    game.playerAnswered[0] = snapshot.val();
+    if((game.playerAnswered[0] + game.playerAnswered[1]) == 2)//we both answered
+    {
+      //show the correct answer page
+      //game.displayAnswer();
+      //kill the timer
+      clearInterval(game.timeID);
+      setTimeout(function(){ game.nextQuestion(); }, 8000);
+    }
+    else if((game.playingComputer == 1)&& (snapshot.val() == 1))
+    {
+      clearInterval(game.timeID);
+      setTimeout(function(){ game.nextQuestion(); }, 8000);
+    }
+    else
+    {
 
+    }
   }
 });
 
 database.ref("Player2/Answered").on("value", function(snapshot) //the timer is counting down
 {
-  game.playerAnswered[1] = snapshot.val();
-  if((game.playerAnswered[0] + game.playerAnswered[1]) == 2)//we both answered
+  if(game.player > 0)//i'm in the game
   {
-    //show the correct answer page
-    //game.displayAnswer();
-    //kill the timer
-    clearInterval(game.timeID);
-    setTimeout(function(){ game.nextQuestion(); }, 8000);
-  }
-  else if((game.playingComputer == 1)&& (snapshot.val() == 1))
-  {
-    clearInterval(game.timeID);
-    setTimeout(function(){ game.nextQuestion(); }, 8000);
-  }
-  else
-  {
-    //notify that we are waiting for the other player
+    game.playerAnswered[1] = snapshot.val();
+    if((game.playerAnswered[0] + game.playerAnswered[1]) == 2)//we both answered
+    {
+      //show the correct answer page
+      //game.displayAnswer();
+      //kill the timer
+      clearInterval(game.timeID);
+      setTimeout(function(){ game.nextQuestion(); }, 8000);
+    }
+    else if((game.playingComputer == 1)&& (snapshot.val() == 1))
+    {
+      clearInterval(game.timeID);
+      setTimeout(function(){ game.nextQuestion(); }, 8000);
+    }
+    else
+    {
+      //notify that we are waiting for the other player
+    }
   }
 });
 
 
 database.ref("Game/Started").on("value", function(snapshot) //has the game started?
 {
-  if(game.started == 0)//the other player started the game
+  if(game.player > 0)//i'm in the game
   {
-    if(snapshot.val() == 1)
+    if(game.started == 0)//the other player started the game
     {
-      game.started = snapshot.val();
-      game.myDivGameArea.empty();//clear out my div and add the category buttons
-      game.myDivGameArea.append("<div><h4 class='text-center' id = 'prompt'>Your opponent is choosing a category</h4></div>");
-      game.myDivGameArea.append("<div><h5 class='text-center' id = 'player1Name'>Player 1: " + game.playerName[0]  +" </h5></div>");
-      game.myDivGameArea.append("<div><h5 class='text-center' id = 'player2Name'>Player 2: " + game.playerName[1] +" </h5></div>");
+      if(snapshot.val() == 1)
+      {
+        game.started = snapshot.val();
+        game.myDivGameArea.empty();//clear out my div and add the category buttons
+        game.myDivGameArea.append("<div><h4 class='text-center' id = 'prompt'>Your opponent is choosing a category</h4></div>");
+        game.myDivGameArea.append("<div><h5 class='text-center' id = 'player1Name'>Player 1: " + game.playerName[0]  +" </h5></div>");
+        game.myDivGameArea.append("<div><h5 class='text-center' id = 'player2Name'>Player 2: " + game.playerName[1] +" </h5></div>");
+      }
     }
   }
 });
 
 database.ref("Game/Go").on("value", function(snapshot) //player 1 name is set
 {
-  if(snapshot.val() == 1)
+  if(game.player > 0)//i'm in the game
   {
-    if(game.go == 0)//the other player picked the category
+    if(snapshot.val() == 1)
     {
-      game.startNewGame();
+      if(game.go == 0)//the other player picked the category
+      {
+        game.startNewGame();
+      }
     }
   }
 });
