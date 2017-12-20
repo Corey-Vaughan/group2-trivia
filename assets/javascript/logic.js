@@ -651,7 +651,7 @@ $("#name-btn").on("click", function(event) {
   database.ref().push(newUser);
 
 // Logs everything to console
-  console.log(newUser.name);
+  // console.log(newUser.name);
 });
 
 database.ref().on("child_added", function(childSnapshot, prevChildKey) {
@@ -660,8 +660,40 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey) {
   var userName = childSnapshot.val().name;
 
 // // User Info
-  console.log(userName);
+  // console.log(userName);
 
 // // Add to the leaderboard
   $("#achievements > tbody").append("<tr><td>" + userName + "</td></tr>");
-});*/
+  });*/
+
+});
+
+//Chat section
+
+var showChats = function(){
+    database.ref("chatObject").on("child_added", function(snapshot) {
+      var chat = snapshot.val();
+      console.log(chat.chat);
+
+      var newChatLine = "<tr><td>" + chat.chat.sender + ":</td><td>" + chat.chat.message + "</td></tr>";
+      $("#displayRow").prepend(newChatLine);
+    });
+};
+
+$('#chat-btn').on('click', function() {
+    var msg = $('#chat-input');
+    var chatObj = {
+        message: msg.val(),
+        sender: game.playerName[game.player-1],
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+    };
+
+    database.ref("chatObject").push({
+      chat: chatObj
+    })
+    //Clear message input
+    msg.val("");
+    return false;
+});
+
+showChats();
