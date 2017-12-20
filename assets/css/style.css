@@ -76,6 +76,10 @@ body {
   	cursor: pointer;
 }
 
+#achievements{
+    height: 150px;
+    overflow: scroll;
+}
 
 #chatBox {
 	width: 100%;
@@ -94,6 +98,3 @@ body {
 	color: #337ab7;
 
 }
-
-
-
