@@ -78,7 +78,22 @@ var game =
         {
           database.ref("Player1").remove();
         }
-      }
+
+          var userName = "lary";
+          var userScore = 50;
+          var userTime = "00:00";
+
+          var newUser = {
+            name: userName,
+            score: userScore,
+            time: userTime,
+            }
+
+          database.ref("/Highscores").push(newUser);
+          console.log("The game has ended");
+          console.log(newUser);
+          console.log(userScore);
+        }
       clearInterval(game.timeID)//
       game.shallWePlay();
     }
@@ -344,25 +359,18 @@ $(document).ready(function()
   $('#chat').hide();
 
   //shows the scores
-  database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+  database.ref("/Highscores").on("value", function(snapshot) {
 
-  console.log(childSnapshot.val());
+  console.log(snapshot.val());
 
-  // Store everything into a variable.
-  var userName = childSnapshot.val().name;
-  var userScore = childSnapshot.val().score;
-  var userTime = childSnapshot.val().time;
+ $.each(snapshot.val(), function(k, v)
+  {
+    console.log(k)
+    console.log(v)
 
-  // User Info
-  console.log(userName);
-  console.log(userScore);
-  console.log(userTime);
-
-
-  // Add to the leaderboard
-  $("#achievements").append("<div>" + userName + ": " + userScore + " " +
-  userTime + "</div>");
-});
+    $("#achievements").append("<div><strong>" + v.name + "</strong><em> Score: </em>: " + v.score + "<em> Time: </em>" + v.time + "</div>");
+    });
+  });
 });
 
 $(document).on("click", "#name-btn" , function(event)//enter your name
