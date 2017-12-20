@@ -128,9 +128,9 @@ var game =
   {
     game.myDivGameArea.empty();//clear out my div and add the category buttons
     game.myDivGameArea.append("<div><h4 class='text-center' id = 'prompt'>Wait for an opponent or play against the Computer: </h4></div>");
-    game.myDivGameArea.append("<div><h5 class='text-center' id = 'player1Name'>Player 1: " + game.playerName[0]  +" </h5></div>");
-    game.myDivGameArea.append("<div><h5 class='text-center' id = 'player2Name'>Player 2: " + game.playerName[1] +" </h5></div>");
-    var myButton = $("<button/>", {"id": "startTheGame"});
+    game.myDivGameArea.append("<div><h5 class='text-center animated zoomInRight' id = 'player1Name'>Player 1: " + game.playerName[0]  + " </h5></div>");
+    game.myDivGameArea.append("<div><h5 class='text-center animated zoomInLeft' id = 'player2Name'>Player 2: " + game.playerName[1] + " </h5></div>");
+    var myButton = $("<button class='animated infinite pulse' id='startTheGame'>");
     myButton.text("Start")
     game.myDivGameArea.append(myButton);
   },
@@ -252,6 +252,13 @@ var game =
       game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalScore1'>" + game.playerName[0] + " Score: "+ game.playerScore[0]+ "</h4></div>");
       game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime2'>" + game.playerName[1] + " Time: "+ game.playerTime[1]+ "</h4></div>");
       game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalScore2'>" + game.playerName[1] + " Score: "+ game.playerScore[1]+ "</h4></div>");          
+      
+      //update scoreboard
+
+      var currentQuestion = game.question + 1;
+
+      $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
+
       if(yourAnswer == 0)//wrong
       {
         game.myDivGameArea.append("<div><h4 class='text-center' id = 'totalTime'> wrong answer!!!!!</h4></div>");

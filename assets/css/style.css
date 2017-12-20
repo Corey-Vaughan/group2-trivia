@@ -29,22 +29,48 @@ body {
 	margin-top: 10px;
 }
 
-#achievements-panel, #chat, #content-panel {
+#achievements-panel, #chat, #content-panel, #scoreboard-panel {
 	margin-bottom: 30px;
 }
 
-.comp-div {
-	width: 20%;
-	height: 5%;
-	border-radius: 10px;
-	background-color: blue;
-	color: white;
+#scoreboard-table {
 	text-align: center;
+}
+
+.answerChoice, #startTheGame {
+	background-color: green;
+	color: white;
+	border-radius: 5px;
+	margin: 20px;
+	padding: 10px;
+}
+
+.answerChoice:hover {
+	opacity: 0.5;
+}
+
+#totalTime {
+	font-family: 'Shrikhand', cursive;
+	font-size: 24px;
+	color: #ff0033;
 	margin-top: 30px;
 }
 
-.comp-div:hover {
-	opacity: 0.7;
+#answerDiv {
+	font-family: 'Shrikhand', cursive;
+	font-size: 24px;
+	color: green;
+	margin-bottom: 30px;
+}
+
+#player1Name, #totalTime1, #totalScore1 {
+	font-weight: bold;
+	color: #e64100;
+}
+
+#player2Name, #totalTime2, #totalScore2 {
+	font-weight: bold;
+	color: #00a5e6;
 }
 
 .button-group {
@@ -76,7 +102,20 @@ body {
   	cursor: pointer;
 }
 
-#achievements{
+#prompt {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+#player1Name, #player2Name {
+	font-size: 24px;
+}
+
+.fadeIn:first-child {
+	background-color: #ffff99;
+}
+
+#achievements {
     height: 150px;
     overflow: scroll;
 }
