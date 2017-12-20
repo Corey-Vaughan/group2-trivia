@@ -632,41 +632,7 @@ window.addEventListener("beforeunload", function (e) {
   }
   return confirmationMessage;   //Webkit, Safari, Chrome
 });
-/*
-//Here is John's Leaderboard Section
 
-// This is what happens when the game starts and the user enters their name
-$("#name-btn").on("click", function(event) {
-  event.preventDefault();
-
-// User Input
-  var userName = $("#name-btn").val().trim();
-
-// Creates local object to hold all info
-  var newUser = {
-    name: userName,
-  };
-
-// Uploads user data to the database
-  database.ref().push(newUser);
-
-// Logs everything to console
-  // console.log(newUser.name);
-});
-
-database.ref().on("child_added", function(childSnapshot, prevChildKey) {
-
-// // Store everything into a variable.
-  var userName = childSnapshot.val().name;
-
-// // User Info
-  // console.log(userName);
-
-// // Add to the leaderboard
-  $("#achievements > tbody").append("<tr><td>" + userName + "</td></tr>");
-  });*/
-
-});
 
 //Chat section
 
