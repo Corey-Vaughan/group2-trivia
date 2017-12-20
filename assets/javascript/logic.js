@@ -284,7 +284,7 @@ var game =
       database.ref("Player" + game.player).child('Answered').set(1);
       game.showAnswer(2);//you didn't answer in time
     }
-    
+    clearInterval(game.timeID)//
     setTimeout(function(){ game.nextQuestion(); }, 8000);
     console.log("outta time");
   },
@@ -308,7 +308,16 @@ var game =
   updateScoreboard: function()
   {
     var currentQuestion = game.question + 1;
-    $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
+    if(currentQuestion == 10)//make the font bold somehow?
+    {
+      $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
+    }
+    else
+    {
+      $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
+    }
+    
+    
   },
   leaderboardEndGame: function()
 {//adds to the database
