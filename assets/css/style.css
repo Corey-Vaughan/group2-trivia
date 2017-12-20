@@ -77,6 +77,20 @@ body {
 }
 
 
+#chatBox {
+	width: 100%;
+	margin: 10px auto;
+}
+
+#displayRow {
+	padding: 10px;
+	height: 200px;
+	overflow: scroll;
+	display: block;
+	width: 100%;
+	background: white;
+	color: #337ab7;
+}
 
 
 
