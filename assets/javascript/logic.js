@@ -93,7 +93,6 @@ var game =
           database.ref("/Highscores").push(newUser1);
         }
       clearInterval(game.timeID)//
-      game.shallWePlay();
     }
     else
     {
@@ -425,6 +424,7 @@ $(document).on("click", "#startTheGame" , function(event)//start the game
       }
     }
     game.started = 1;
+    $('#scoreboard-table > tbody').empty();
     database.ref("Game").child('Started').set(1);//the game is starting
     game.displayCategories();
 });
@@ -462,15 +462,15 @@ database.ref("Player1/Answered").on("value", function(snapshot) //the timer is c
       //show the correct answer page
       //game.displayAnswer();
       //kill the timer
-      //update the scorboard-table
+      //update the scoreboard-table
       setTimeout(function(){ game.updateScoreboard(); }, 500);
       clearInterval(game.timeID);
       setTimeout(function(){ game.nextQuestion(); }, 8000);
     }
     else if((game.playingComputer == 1)&& (snapshot.val() == 1))
     {
-      //update the scorboard-table
-      //update the scorboard-table
+      //update the scoreboard-table
+      //update the scoreboard-table
       setTimeout(function(){ game.updateScoreboard(); }, 500);
       clearInterval(game.timeID);
       setTimeout(function(){ game.nextQuestion(); }, 8000);
