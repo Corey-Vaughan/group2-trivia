@@ -57,6 +57,7 @@ var game =
         database.ref("Player1").child("Time").set(0); 
       }
     }
+    clearInterval(game.timeID)//
     game.timeID = setInterval(function(){ game.count(); }, 1000);
     game.displayQuestions();
   },
