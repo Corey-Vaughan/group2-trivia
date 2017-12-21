@@ -62,9 +62,9 @@ var game =
   },
   nextQuestion: function()
   {
-    if(game.question == 1)//the game is over
+    if(game.question == 9)//the game is over
     {
-      game.started = 9;
+      game.started = 0;
       database.ref("Game").child('Started').set(0);//the game is starting
       game.go = 0;
       database.ref("Game").child('Go').set(0);//the game is starting
