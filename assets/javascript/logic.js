@@ -65,6 +65,7 @@ var game =
   {
     if(game.question == 9)//the game is over
     {
+      game.showGameResults();
       game.started = 0;
       database.ref("Game").child('Started').set(0);//the game is starting
       game.go = 0;
@@ -109,7 +110,6 @@ var game =
 
         }
       clearInterval(game.timeID)//
-      game.shallWePlay();
     }
     else
     {
@@ -337,16 +337,37 @@ var game =
   updateScoreboard: function()
   {
     var currentQuestion = game.question + 1;
-    if(currentQuestion == 10)//make the font bold somehow?
-    {
-      $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
-    }
-    else
-    {
-      $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
-    }
-    
-    
+
+    $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
+
+   },
+  showGameResults: function()
+  {
+    game.myDivGameArea.empty();
+    var gameResultsDiv = $('<div class="gameResultsDiv">');
+      if (game.playerScore[0] > game.playerScore[1]) //if player 1 has higher score
+      {  
+      gameResultsDiv.html(game.playerName[0] + ' is smarter than ' + game.playerName[1] + '!').addClass('player1FinalStyle');
+      } 
+      else if (game.playerScore[0] < game.playerScore[1]) //if player 2 has higher score
+      { 
+      gameResultsDiv.html(game.playerName[1] + ' is smarter than ' + game.playerName[0] + '!').addClass('player2FinalStyle');
+      } 
+      else if (game.playerScore[0] == game.playerScore[1] && game.playerTime[0] > game.playerTime[1]) //if tie, but player 1 was faster
+      {  
+      gameResultsDiv.html(game.playerName[0] + ' may not be smarter, but is definitely faster than ' + game.playerName[1] + '!').addClass('player1FinalStyle');
+      } 
+      else if (game.playerScore[0] == game.playerScore[1] && game.playerTime[0] < game.playerTime[1]) //if tie, but player 2 was faster
+      {  
+      gameResultsDiv.html(game.playerName[1] + ' may not be smarter, but is definitely faster than ' + game.playerName[0]).addClass('player2FinalStyle');
+      }
+    var playAgainDiv = $('<div class="playAgainDiv">');
+    playAgainDiv.html('Play again?');
+    gameResultsDiv.append(playAgainDiv);
+    game.myDivGameArea.append(gameResultsDiv);
+    var myButton = $("<button class='animated infinite pulse' id='startTheGame'>");
+    myButton.text("Start");
+    playAgainDiv.append(myButton);
   },
   leaderboardEndGame: function()
 {//adds to the database
@@ -371,6 +392,7 @@ $(document).ready(function()
 {//when the document loads the first time
   //hide chat log on page load
   $('#chat').hide();
+  $('#scoreboard-panel').hide();
 
   //shows the scores
   database.ref("/Highscores").on("value", function(snapshot) {
@@ -404,6 +426,7 @@ $(document).on("click", "#name-btn" , function(event)//enter your name
 
 $(document).on("click", ".categoryChoice" , function(event)//enter your name
 {
+  $('#scoreboard-panel').show();
   // Get the category choice and get the questions
   // then we wait for player 2 or start the game
   game.category = $(this).data("c");
@@ -450,6 +473,7 @@ $(document).on("click", "#startTheGame" , function(event)//start the game
     }
     game.started = 1;
     database.ref("Game").child('Started').set(1);//the game is starting
+    $('#scoreboard-table > tbody').empty();
     game.displayCategories();
 });
 
