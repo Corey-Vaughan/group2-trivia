@@ -57,7 +57,6 @@ var game =
         database.ref("Player1").child("Time").set(0); 
       }
     }
-    clearInterval(game.timeID);//
     game.timeID = setInterval(function(){ game.count(); }, 1000);
     game.displayQuestions();
   },
@@ -65,7 +64,6 @@ var game =
   {
     if(game.question == 9)//the game is over
     {
-      game.showGameResults();
       game.started = 0;
       database.ref("Game").child('Started').set(0);//the game is starting
       game.go = 0;
@@ -93,7 +91,7 @@ var game =
             }
           
           $("#achievements").prepend("<div><strong>" + newUser2.name + "</strong><em> Score: </em>: " + newUser2.score + "<em> Time: </em>" + newUser2.time + "s</div>");
-
+          database.ref("/Highscores").push(newUser2);
         }
 
           //pushes player1 stats
@@ -106,19 +104,21 @@ var game =
             score: userScore1,
             time: userTime1,
             }
+          
            $("#achievements").prepend("<div><strong>" + newUser1.name + "</strong><em> Score: </em>: " + newUser1.score + "<em> Time: </em>" + newUser1.time + "s</div>");
-
+            database.ref("/Highscores").push(newUser1);
           //pushes player2
 
         }
       clearInterval(game.timeID)//
+      game.shallWePlay();
     }
     else
     {
       game.question++;
       game.time = 15;
       database.ref("Player" + game.player).child('Answered').set(0);
-      clearInterval(game.timeID);//
+      clearInterval(game.timeID)//
       game.timeID = setInterval(function(){ game.count(); }, 1000);
       game.displayQuestions();
     }
@@ -315,8 +315,8 @@ var game =
       database.ref("Player" + game.player).child('Answered').set(1);
       game.showAnswer(2);//you didn't answer in time
     }
-    //clearInterval(game.timeID)//
-    //setTimeout(function(){ game.nextQuestion(); }, 8000);
+    clearInterval(game.timeID)//
+    setTimeout(function(){ game.nextQuestion(); }, 8000);
     console.log("outta time");
   },
   count: function()
@@ -339,54 +339,17 @@ var game =
   updateScoreboard: function()
   {
     var currentQuestion = game.question + 1;
-
-    $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
-
-   },
-  showGameResults: function()
-  {
-    game.myDivGameArea.empty();
-    var gameResultsDiv = $('<div class="gameResultsDiv">');
-      if (game.playerScore[0] > game.playerScore[1]) //if player 1 has higher score
-      {  
-      gameResultsDiv.html(game.playerName[0] + ' is smarter than ' + game.playerName[1] + '!').addClass('player1FinalStyle');
-      } 
-      else if (game.playerScore[0] < game.playerScore[1]) //if player 2 has higher score
-      { 
-      gameResultsDiv.html(game.playerName[1] + ' is smarter than ' + game.playerName[0] + '!').addClass('player2FinalStyle');
-      } 
-      else if (game.playerScore[0] == game.playerScore[1] && game.playerTime[0] > game.playerTime[1]) //if tie, but player 1 was faster
-      {  
-      gameResultsDiv.html(game.playerName[0] + ' may not be smarter, but is definitely faster than ' + game.playerName[1] + '!').addClass('player1FinalStyle');
-      } 
-      else if (game.playerScore[0] == game.playerScore[1] && game.playerTime[0] < game.playerTime[1]) //if tie, but player 2 was faster
-      {  
-      gameResultsDiv.html(game.playerName[1] + ' may not be smarter, but is definitely faster than ' + game.playerName[0]).addClass('player2FinalStyle');
-      }
-    var playAgainDiv = $('<div class="playAgainDiv">');
-    playAgainDiv.html('Play again?');
-    gameResultsDiv.append(playAgainDiv);
-    game.myDivGameArea.append(gameResultsDiv);
-    var myButton = $("<button class='animated infinite pulse' id='startTheGame'>");
-    myButton.text("Start");
-    playAgainDiv.append(myButton);
+    if(currentQuestion == 10)//make the font bold somehow?
+    {
+      $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
+    }
+    else
+    {
+      $('#scoreboard-table > tbody:last-child').prepend('<tr class="animated fadeIn"><td>' + currentQuestion + '</td><td>' + game.playerScore[0] + '</td><td>' + game.playerTime[0] + '</td><td>' + game.playerScore[1] + '</td><td>' + game.playerTime[1] + '</td></tr>');
+    }
+    
+    
   },
-  leaderboardEndGame: function()
-{//adds to the database
-//user input is put into variables
-  var userName = $("#player").val().trim();
-  var userScore = game.playerScore;
-  var userTime = game.playerTime;
-
-  var newUser = {
-    name: userName,
-    score: userScore,
-    time: userTime,
-  }
-
-  database.ref().push(newUser);
-
-},
 
 };
 
@@ -394,22 +357,8 @@ $(document).ready(function()
 {//when the document loads the first time
   //hide chat log on page load
   $('#chat').hide();
-  $('#scoreboard-panel').hide();
 
-  //shows the scores
-  database.ref("/Highscores").on("value", function(snapshot) {
-
-  console.log(snapshot.val());
-
- $.each(snapshot.val(), function(k, v)
-  {
-    console.log(k)
-    console.log(v)
-
-    $("#achievements").append("<div><strong>" + v.name + "</strong><em> Score: </em>: " + v.score + "<em> Time: </em>" + v.time + "</div>");
-    });
   });
-});
 
 $(document).on("click", "#name-btn" , function(event)//enter your name
 { // Prevent form from submitting
@@ -428,7 +377,6 @@ $(document).on("click", "#name-btn" , function(event)//enter your name
 
 $(document).on("click", ".categoryChoice" , function(event)//enter your name
 {
-  $('#scoreboard-panel').show();
   // Get the category choice and get the questions
   // then we wait for player 2 or start the game
   game.category = $(this).data("c");
@@ -453,7 +401,7 @@ $(document).on("click", "#startTheGame" , function(event)//start the game
         //database.ref("Player2").child("Answered").set(1);//the computer went already from now on
         database.ref("Player2").child("Name").set("Computer");//set the computer name to computer
         game.playerName[1] = "Computer";
-        //game.playerAnswered[1] = 1;
+        game.playerAnswered[1] = 1;
       }
     } 
     else if(game.player == 2)//if i'm player 2
@@ -470,12 +418,11 @@ $(document).on("click", "#startTheGame" , function(event)//start the game
         //database.ref("Player1").child("Answered").set(1);//the computer went already from now on
         database.ref("Player1").child("Name").set("Computer");//set the computer name to computer
         game.playerName[0] = "Computer";
-        //game.playerAnswered[0] = 1;
+        game.playerAnswered[0] = 1;
       }
     }
     game.started = 1;
     database.ref("Game").child('Started').set(1);//the game is starting
-    $('#scoreboard-table > tbody').empty();
     game.displayCategories();
 });
 
@@ -762,7 +709,7 @@ window.onload =function(){
 //when the document loads the first time
   //shows the scores
 
-database.ref("/Highscores").on("value", function(snapshot) {
+database.ref("/Highscores").orderByValue().limitToLast(7).on("value", function(snapshot) {
 
  $.each(snapshot.val(), function(k, v)
   {
@@ -770,4 +717,3 @@ database.ref("/Highscores").on("value", function(snapshot) {
     });
   });
 };
-
