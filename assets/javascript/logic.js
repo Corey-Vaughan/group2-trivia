@@ -78,6 +78,8 @@ var game =
         {
           database.ref("Player1").remove();
 
+
+          //This Code is to push plater 2 stats
           var userName2 = game.playerName[1];
           var userScore2 = game.playerScore[1];
           var userTime2 = game.playerTime[1];
@@ -90,7 +92,7 @@ var game =
           database.ref("/Highscores").push(newUser2);
         }
 
-          //pushes player1
+          //pushes player1 stats
           var userName1 = game.playerName[0];
           var userScore1 = game.playerScore[0];
           var userTime1 = game.playerTime[0];
