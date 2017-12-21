@@ -57,7 +57,7 @@ var game =
         database.ref("Player1").child("Time").set(0); 
       }
     }
-    clearInterval(game.timeID)//
+    clearInterval(game.timeID);//
     game.timeID = setInterval(function(){ game.count(); }, 1000);
     game.displayQuestions();
   },
@@ -116,7 +116,7 @@ var game =
       game.question++;
       game.time = 15;
       database.ref("Player" + game.player).child('Answered').set(0);
-      clearInterval(game.timeID)//
+      clearInterval(game.timeID);//
       game.timeID = setInterval(function(){ game.count(); }, 1000);
       game.displayQuestions();
     }
@@ -428,7 +428,7 @@ $(document).on("click", "#startTheGame" , function(event)//start the game
         //database.ref("Player2").child("Answered").set(1);//the computer went already from now on
         database.ref("Player2").child("Name").set("Computer");//set the computer name to computer
         game.playerName[1] = "Computer";
-        game.playerAnswered[1] = 1;
+        //game.playerAnswered[1] = 1;
       }
     } 
     else if(game.player == 2)//if i'm player 2
@@ -445,7 +445,7 @@ $(document).on("click", "#startTheGame" , function(event)//start the game
         //database.ref("Player1").child("Answered").set(1);//the computer went already from now on
         database.ref("Player1").child("Name").set("Computer");//set the computer name to computer
         game.playerName[0] = "Computer";
-        game.playerAnswered[0] = 1;
+        //game.playerAnswered[0] = 1;
       }
     }
     game.started = 1;
