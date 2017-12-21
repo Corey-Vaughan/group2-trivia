@@ -78,6 +78,21 @@ var game =
         else//you're player 2 
         {
           database.ref("Player1").remove();
+
+          //This Code is to push plater 2 stats
+          var userName2 = game.playerName[1];
+          var userScore2 = game.playerScore[1];
+          var userTime2 = game.playerTime[1];
+
+          var newUser2 = {
+            name: userName2,
+            score: userScore2,
+            time: userTime2,
+            }
+          database.ref("/Highscores").push(newUser2);
+        }
+
+          //pushes player1 stats
         }
 
           var userName1 = game.playerName[0];
@@ -711,7 +726,6 @@ showChats();
 window.onload =function(){
 //when the document loads the first time
   //shows the scores
-
 
   database.ref("/Highscores").on("value", function(snapshot) {
 
