@@ -89,7 +89,9 @@ var game =
             score: userScore2,
             time: userTime2,
             }
-          database.ref("/Highscores").push(newUser2);
+          
+          $("#achievements").prepend("<div><strong>" + newUser2.name + "</strong><em> Score: </em>: " + newUser2.score + "<em> Time: </em>" + newUser2.time + "s</div>");
+
         }
 
           //pushes player1 stats
@@ -102,7 +104,7 @@ var game =
             score: userScore1,
             time: userTime1,
             }
-          database.ref("/Highscores").push(newUser1);
+           $("#achievements").prepend("<div><strong>" + newUser1.name + "</strong><em> Score: </em>: " + newUser1.score + "<em> Time: </em>" + newUser1.time + "s</div>");
 
           //pushes player2
 
@@ -706,7 +708,7 @@ window.onload =function(){
 //when the document loads the first time
   //shows the scores
 
-  database.ref("/Highscores").on("value", function(snapshot) {
+database.ref("/Highscores").on("value", function(snapshot) {
 
  $.each(snapshot.val(), function(k, v)
   {
