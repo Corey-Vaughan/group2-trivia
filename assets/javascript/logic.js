@@ -313,8 +313,8 @@ var game =
       database.ref("Player" + game.player).child('Answered').set(1);
       game.showAnswer(2);//you didn't answer in time
     }
-    clearInterval(game.timeID)//
-    setTimeout(function(){ game.nextQuestion(); }, 8000);
+    //clearInterval(game.timeID)//
+    //setTimeout(function(){ game.nextQuestion(); }, 8000);
     console.log("outta time");
   },
   count: function()
