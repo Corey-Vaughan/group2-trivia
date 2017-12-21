@@ -77,22 +77,35 @@ var game =
         else//you're player 2 
         {
           database.ref("Player1").remove();
+
+
+          //This Code is to push plater 2 stats
+          var userName2 = game.playerName[1];
+          var userScore2 = game.playerScore[1];
+          var userTime2 = game.playerTime[1];
+
+          var newUser2 = {
+            name: userName2,
+            score: userScore2,
+            time: userTime2,
+            }
+          database.ref("/Highscores").push(newUser2);
         }
 
-          var userName = "lary";
-          var userScore = 50;
-          var userTime = "00:00";
+          //pushes player1 stats
+          var userName1 = game.playerName[0];
+          var userScore1 = game.playerScore[0];
+          var userTime1 = game.playerTime[0];
 
-          var newUser = {
-            name: userName,
-            score: userScore,
-            time: userTime,
+          var newUser1 = {
+            name: userName1,
+            score: userScore1,
+            time: userTime1,
             }
+          database.ref("/Highscores").push(newUser1);
 
-          database.ref("/Highscores").push(newUser);
-          console.log("The game has ended");
-          console.log(newUser);
-          console.log(userScore);
+          //pushes player2
+
         }
       clearInterval(game.timeID)//
       game.shallWePlay();
