@@ -30,7 +30,7 @@ body {
 }
 
 #achievements-panel, #chat, #content-panel, #scoreboard-panel {
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 }
 
 #scoreboard-table {
@@ -71,6 +71,18 @@ body {
 #player2Name, #totalTime2, #totalScore2 {
 	font-weight: bold;
 	color: #00a5e6;
+}
+
+.player1FinalStyle {
+	color: #e64100;
+	font-size: 24px;
+	font-weight: bolder;
+}
+
+.player2FinalStyle {
+	color: #00a5e6;
+	font-size: 24px;
+	font-weight: bolder;
 }
 
 .button-group {
@@ -120,6 +132,11 @@ body {
     overflow: scroll;
 }
 
+#scoreboard {
+	max-height: 200px;
+	overflow: scroll;
+}
+
 #chatBox {
 	width: 100%;
 	margin: 10px auto;
@@ -136,4 +153,13 @@ body {
 	background: white;
 	color: #337ab7;
 
+}
+
+.footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	color: white;
+	text-align: center;
 }
