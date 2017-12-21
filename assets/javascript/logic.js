@@ -64,7 +64,7 @@ var game =
   {
     if(game.question == 1)//the game is over
     {
-      game.started = 0;
+      game.started = 9;
       database.ref("Game").child('Started').set(0);//the game is starting
       game.go = 0;
       database.ref("Game").child('Go').set(0);//the game is starting
@@ -703,11 +703,8 @@ showChats();
 window.onload =function(){
 //when the document loads the first time
   //shows the scores
+
   database.ref("/Highscores").on("value", function(snapshot) {
-
-  var recentPostsRef = firebase.database().ref('Highscores');
-
-  console.log(snapshot.val());
 
  $.each(snapshot.val(), function(k, v)
   {
